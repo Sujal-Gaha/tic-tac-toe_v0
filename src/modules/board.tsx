@@ -58,7 +58,7 @@ export const Board = () => {
       {squares.map((square) => (
         <div
           key={square.id}
-          className="bg-primary rounded-md dark:bg-[#C9C9C7] flex items-center justify-center cursor-pointer"
+          className="bg-[#ff033e] rounded-md dark:bg-[#C9C9C7] flex items-center justify-center cursor-pointer"
           onClick={openPlayerWonModal}
         ></div>
       ))}

@@ -3,10 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { PlayerScoreCount } from "@/components/player-score-count";
 import { Board } from "@/modules/board";
+import { Navbar } from "@/components/navbar";
 
 export default function Home() {
   return (
     <main className="h-screen w-screen flex items-center justify-center bg-white dark:bg-[#0F0F10]">
+      <Navbar />
       <section className="w-[448px] h-[496px] bg-white dark:bg-[#18181b] rounded-lg p-6 shadow-2xl shadow-[#E11D48] flex flex-col gap-6">
         <PlayerScoreCount />
         <Board />
