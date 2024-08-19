@@ -4,6 +4,7 @@ import { squares } from "@/constants/square";
 import { IoMdClose } from "react-icons/io";
 import { Modal } from "@/components/modal";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const PlayerWonModal = ({
   closePlayerWonModal,
@@ -56,11 +57,13 @@ export const Board = () => {
   return (
     <div className="grid grid-cols-3 h-full gap-4">
       {squares.map((square) => (
-        <div
+        <motion.div
           key={square.id}
           className="bg-[#ff033e] rounded-md dark:bg-[#C9C9C7] flex items-center justify-center cursor-pointer"
           onClick={openPlayerWonModal}
-        ></div>
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        />
       ))}
       {isPlayerWonModalOpen && PlayerWonModalComponent}
     </div>
