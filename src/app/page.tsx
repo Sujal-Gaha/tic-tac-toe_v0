@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { PlayerScoreCount } from "@/components/player-score-count";
 import { Board } from "@/modules/board";
-import { Navbar } from "@/components/navbar";
 
 export default function Home() {
   return (
