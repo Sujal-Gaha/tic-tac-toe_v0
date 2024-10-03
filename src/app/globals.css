@@ -67,3 +67,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+circle,
+rect,
+line {
+  stroke-width: 10px;
+  stroke-linecap: round;
+  fill: transparent;
+}
