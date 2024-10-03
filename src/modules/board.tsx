@@ -1,14 +1,12 @@
 "use client";
 
-import { tiles as tilesData, TTile } from "@/constants/tile";
+import { TTile } from "@/constants/tile";
 import { IoMdClose } from "react-icons/io";
 import { Modal } from "@/components/modal";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Cross } from "@/components/cross";
 import { Circle } from "@/components/circle";
-
-type TTurn = "player_one" | "player_two";
 
 const PlayerWonModal = ({
   closePlayerWonModal,
@@ -54,34 +52,13 @@ const usePlayerWonModal = () => {
   };
 };
 
-export const Board = () => {
-  const [turn, setTurn] = useState<TTurn>("player_one");
-  const [tiles, setTiles] = useState<TTile[]>(tilesData);
-
-  const isPlayerOneTurn = turn === "player_one";
-  const toggleTurn = () =>
-    setTurn(isPlayerOneTurn ? "player_two" : "player_one");
-
-  const setTileSelectedBy = (id: number) => {
-    const updatedTiles = [...tiles];
-
-    updatedTiles.forEach((tile, index) => {
-      if (tile.id === id) {
-        updatedTiles[index].selectedBy = turn;
-        updatedTiles[index].isSelected = true;
-      }
-    });
-
-    console.log("updatedTiles ", updatedTiles);
-
-    setTiles(updatedTiles);
-  };
-
-  const handleTileClicked = (id: number) => {
-    toggleTurn();
-    setTileSelectedBy(id);
-  };
-
+export const Board = ({
+  tiles,
+  handleTileClickedFn,
+}: {
+  tiles: TTile[];
+  handleTileClickedFn: (id: number) => void;
+}) => {
   const { PlayerWonModalComponent, isPlayerWonModalOpen, openPlayerWonModal } =
     usePlayerWonModal();
 
@@ -100,7 +77,7 @@ export const Board = () => {
           <motion.div
             key={tile.id}
             className="bg-[#ff033e] rounded-md dark:bg-[#C9C9C7] flex items-center justify-center cursor-pointer"
-            onClick={() => handleTileClicked(tile.id)}
+            onClick={() => handleTileClickedFn(tile.id)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           />
