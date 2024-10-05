@@ -1,19 +1,23 @@
 import { TTile } from "@/constants/tile";
 import { useState } from "react";
 import { tiles as tilesData } from "@/constants/tile";
+import { winningConditions } from "@/constants/winningConditions";
+import { playersData, TPlayer } from "@/constants/player";
 
 export type TTurn = "player_one" | "player_two";
 
 export const useBoardFeatures = () => {
   const [turn, setTurn] = useState<TTurn>("player_one");
   const [tiles, setTiles] = useState<TTile[]>(tilesData);
+  const [isPlayable, setIsPlayable] = useState(true);
   const [selectedTileP1, setSelectedTileP1] = useState<number[]>([]);
   const [selectedTileP2, setSelectedTileP2] = useState<number[]>([]);
+  const [players, setPlayers] = useState<TPlayer[]>(playersData);
 
   const isPlayerOneTurn = turn === "player_one";
   const isPlayerTwoTurn = turn === "player_two";
 
-  const resetBoardFn = () => {
+  const playAgainFn = () => {
     setTurn("player_one");
 
     const resetTiles = [...tiles];
@@ -21,8 +25,20 @@ export const useBoardFeatures = () => {
       tile.isSelected = false;
       tile.selectedBy = "";
     });
-
     setTiles(resetTiles);
+
+    setIsPlayable(true);
+
+    setSelectedTileP1([]);
+    setSelectedTileP2([]);
+  };
+
+  const resetBoardFn = () => {
+    playAgainFn();
+
+    const resetPlayers = [...players];
+    resetPlayers.forEach((player) => (player.score = 0));
+    setPlayers(resetPlayers);
   };
 
   const toggleTurnFn = () =>
@@ -46,23 +62,57 @@ export const useBoardFeatures = () => {
       const updatedSelectedTileP1 = [...selectedTileP1];
       updatedSelectedTileP1.push(id);
       setSelectedTileP1(updatedSelectedTileP1);
+
+      checkWinningCondition(updatedSelectedTileP1, "player_one");
     }
 
     if (isPlayerTwoTurn) {
       const updatedSelectedTileP2 = [...selectedTileP2];
       updatedSelectedTileP2.push(id);
       setSelectedTileP2(updatedSelectedTileP2);
+
+      checkWinningCondition(updatedSelectedTileP2, "player_two");
     }
   };
 
+  const checkWinningCondition = (selectedTiles: number[], player: TTurn) => {
+    winningConditions.forEach((condition) => {
+      const isWinning = condition.every(
+        (tile) => selectedTiles.includes(tile) && selectedTiles.length > 2
+      );
+
+      if (isWinning) {
+        setIsPlayable(false);
+        setTimeout(() => {
+          const updatedPlayers = [...players];
+          if (player === "player_one") {
+            updatedPlayers[0].score++;
+            setPlayers(updatedPlayers);
+            window.alert(players[0].name + " won");
+          }
+
+          if (player === "player_two") {
+            updatedPlayers[1].score++;
+            setPlayers(updatedPlayers);
+            window.alert(players[1].name + " won");
+          }
+        }, 500);
+      }
+    });
+  };
+
   const handleTileClickedFn = (id: number) => {
-    toggleTurnFn();
-    setTileSelectedBy(id);
-    setSelectedTile(id);
+    if (isPlayable) {
+      toggleTurnFn();
+      setTileSelectedBy(id);
+      setSelectedTile(id);
+    }
   };
 
   return {
+    players,
     tiles,
+    playAgainFn,
     resetBoardFn,
     handleTileClickedFn,
   };
