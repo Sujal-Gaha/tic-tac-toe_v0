@@ -3,6 +3,7 @@ import { useState } from "react";
 import { tiles as tilesData } from "@/constants/tile";
 import { winningConditions } from "@/constants/winningConditions";
 import { playersData, TPlayer } from "@/constants/player";
+import { usePlayerWonModal } from "./usePlayerWonModal";
 
 export type TTurn = "player_one" | "player_two";
 
@@ -32,6 +33,9 @@ export const useBoardFeatures = () => {
     setSelectedTileP1([]);
     setSelectedTileP2([]);
   };
+
+  const { PlayerWonModalComponent, openPlayerWonModal, setPlayer } =
+    usePlayerWonModal({ playAgainFn });
 
   const resetBoardFn = () => {
     playAgainFn();
@@ -85,16 +89,19 @@ export const useBoardFeatures = () => {
         setIsPlayable(false);
         setTimeout(() => {
           const updatedPlayers = [...players];
+
           if (player === "player_one") {
             updatedPlayers[0].score++;
             setPlayers(updatedPlayers);
-            window.alert(players[0].name + " won");
+            setPlayer(players[0].name);
+            openPlayerWonModal();
           }
 
           if (player === "player_two") {
             updatedPlayers[1].score++;
             setPlayers(updatedPlayers);
-            window.alert(players[1].name + " won");
+            setPlayer(players[1].name);
+            openPlayerWonModal();
           }
         }, 500);
       }
@@ -115,5 +122,6 @@ export const useBoardFeatures = () => {
     playAgainFn,
     resetBoardFn,
     handleTileClickedFn,
+    PlayerWonModalComponent,
   };
 };

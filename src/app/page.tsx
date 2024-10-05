@@ -6,8 +6,14 @@ import { Board } from "@/modules/board";
 import { useBoardFeatures } from "@/hooks/useBoardFeatures";
 
 export default function Home() {
-  const { tiles, playAgainFn, resetBoardFn, handleTileClickedFn, players } =
-    useBoardFeatures();
+  const {
+    tiles,
+    playAgainFn,
+    resetBoardFn,
+    handleTileClickedFn,
+    players,
+    PlayerWonModalComponent,
+  } = useBoardFeatures();
 
   return (
     <main className="flex items-center justify-center bg-white dark:bg-[#0F0F10] mt-60">
@@ -18,11 +24,12 @@ export default function Home() {
           <Button variant="outline" size="lg" onClick={playAgainFn}>
             Play again
           </Button>
-          <Button variant="contact" size="lg" onClick={resetBoardFn}>
+          <Button variant="destructive" size="lg" onClick={resetBoardFn}>
             Reset
           </Button>
         </div>
       </section>
+      {PlayerWonModalComponent}
     </main>
   );
 }
