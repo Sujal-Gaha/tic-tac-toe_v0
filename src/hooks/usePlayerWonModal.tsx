@@ -3,33 +3,29 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const PlayerWonModal = ({
-  isModalOpen,
   closeModal,
   player,
   playAgainFn,
 }: {
-  isModalOpen: boolean;
   closeModal: () => void;
   player: string;
   playAgainFn: () => void;
 }) => {
   return (
-    <Modal isModalOpen={isModalOpen} closeModal={closeModal}>
-      <div className="py-16 px-24 rounded-md bg-white flex flex-col items-center justify-center gap-4">
-        <span className="text-4xl font-medium">{player} won!</span>
-        <div>
-          <Button
-            variant="outline"
-            onClick={() => {
-              closeModal();
-              playAgainFn();
-            }}
-          >
-            Play Again
-          </Button>
-        </div>
+    <div className="py-16 px-24 rounded-md bg-white flex flex-col items-center justify-center gap-4">
+      <span className="text-4xl font-medium">{player} won!</span>
+      <div>
+        <Button
+          variant="outline"
+          onClick={() => {
+            closeModal();
+            playAgainFn();
+          }}
+        >
+          Play Again
+        </Button>
       </div>
-    </Modal>
+    </div>
   );
 };
 
@@ -48,12 +44,13 @@ export const usePlayerWonModal = ({
     openPlayerWonModal,
     closePlayerWonModal,
     PlayerWonModalComponent: (
-      <PlayerWonModal
-        isModalOpen={isModalOpen}
-        closeModal={closePlayerWonModal}
-        player={player}
-        playAgainFn={playAgainFn}
-      />
+      <Modal isModalOpen={isModalOpen} closeModal={closePlayerWonModal}>
+        <PlayerWonModal
+          closeModal={closePlayerWonModal}
+          player={player}
+          playAgainFn={playAgainFn}
+        />
+      </Modal>
     ),
     setPlayer,
   };
