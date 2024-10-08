@@ -8,12 +8,19 @@ import { useBoardFeatures } from "@/hooks/useBoardFeatures";
 export default function Home() {
   const {
     tiles,
+    isAllTilesSelected,
     playAgainFn,
     resetBoardFn,
     handleTileClickedFn,
     players,
     PlayerWonModalComponent,
   } = useBoardFeatures();
+
+  if (isAllTilesSelected) {
+    setTimeout(() => {
+      console.log("Draw vayo");
+    }, 500);
+  }
 
   return (
     <main className="flex items-center justify-center bg-white dark:bg-[#0F0F10] mt-60">

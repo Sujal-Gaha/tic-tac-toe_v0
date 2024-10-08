@@ -1,5 +1,5 @@
 import { TTile } from "@/constants/tile";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { tiles as tilesData } from "@/constants/tile";
 import { winningConditions } from "@/constants/winningConditions";
 import { playersData, TPlayer } from "@/constants/player";
@@ -17,6 +17,11 @@ export const useBoardFeatures = () => {
 
   const isPlayerOneTurn = turn === "player_one";
   const isPlayerTwoTurn = turn === "player_two";
+
+  const isAllTilesSelected = useMemo(
+    () => tiles.every((tile) => tile.isSelected),
+    [tiles]
+  );
 
   const playAgainFn = () => {
     setTurn("player_one");
@@ -119,6 +124,7 @@ export const useBoardFeatures = () => {
   return {
     players,
     tiles,
+    isAllTilesSelected,
     playAgainFn,
     resetBoardFn,
     handleTileClickedFn,
