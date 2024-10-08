@@ -8,15 +8,15 @@ import { useBoardFeatures } from "@/hooks/useBoardFeatures";
 export default function Home() {
   const {
     tiles,
-    isAllTilesSelected,
     playAgainFn,
     resetBoardFn,
     handleTileClickedFn,
     players,
+    isDraw,
     PlayerWonModalComponent,
   } = useBoardFeatures();
 
-  if (isAllTilesSelected) {
+  if (isDraw) {
     setTimeout(() => {
       console.log("Draw vayo");
     }, 500);

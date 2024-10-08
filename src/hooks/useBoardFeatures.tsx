@@ -1,5 +1,5 @@
 import { TTile } from "@/constants/tile";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { tiles as tilesData } from "@/constants/tile";
 import { winningConditions } from "@/constants/winningConditions";
 import { playersData, TPlayer } from "@/constants/player";
@@ -14,6 +14,8 @@ export const useBoardFeatures = () => {
   const [selectedTileP1, setSelectedTileP1] = useState<number[]>([]);
   const [selectedTileP2, setSelectedTileP2] = useState<number[]>([]);
   const [players, setPlayers] = useState<TPlayer[]>(playersData);
+  const [hasAPlayerWon, setHasAPlayerWon] = useState(false);
+  const [isDraw, setIsDraw] = useState(false);
 
   const isPlayerOneTurn = turn === "player_one";
   const isPlayerTwoTurn = turn === "player_two";
@@ -37,6 +39,8 @@ export const useBoardFeatures = () => {
 
     setSelectedTileP1([]);
     setSelectedTileP2([]);
+
+    setHasAPlayerWon(false);
   };
 
   const { PlayerWonModalComponent, openPlayerWonModal, setPlayer } =
@@ -92,6 +96,7 @@ export const useBoardFeatures = () => {
 
       if (isWinning) {
         setIsPlayable(false);
+        setHasAPlayerWon(true);
         setTimeout(() => {
           const updatedPlayers = [...players];
 
@@ -121,10 +126,17 @@ export const useBoardFeatures = () => {
     }
   };
 
+  useEffect(() => {
+    if (isAllTilesSelected && !hasAPlayerWon) {
+      setIsDraw(true);
+      setIsPlayable(false);
+    }
+  }, [isAllTilesSelected, hasAPlayerWon]);
+
   return {
     players,
     tiles,
-    isAllTilesSelected,
+    isDraw,
     playAgainFn,
     resetBoardFn,
     handleTileClickedFn,
