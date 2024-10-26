@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { PlayerScoreCount } from "@/components/player-score-count";
 import { Board } from "@/modules/board";
 import { useBoardFeatures } from "@/hooks/useBoardFeatures";
+import { useDrawModal } from "@/hooks/useDrawModal";
 
 export default function Home() {
   const {
@@ -16,9 +17,12 @@ export default function Home() {
     PlayerWonModalComponent,
   } = useBoardFeatures();
 
+  const { openDrawModal, DrawModalComponent } = useDrawModal({ playAgainFn });
+
   if (isDraw) {
     setTimeout(() => {
       console.log("Draw vayo");
+      openDrawModal();
     }, 500);
   }
 
@@ -40,6 +44,7 @@ export default function Home() {
         </div>
       </section>
       {PlayerWonModalComponent}
+      {DrawModalComponent}
     </main>
   );
 }

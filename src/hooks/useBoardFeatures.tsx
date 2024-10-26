@@ -26,6 +26,7 @@ export const useBoardFeatures = () => {
   );
 
   const playAgainFn = () => {
+    setIsDraw(false);
     setTurn("player_one");
 
     const resetTiles = [...tiles];
